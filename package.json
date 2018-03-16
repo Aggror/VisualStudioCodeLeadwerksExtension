@@ -8,6 +8,7 @@
         "vscode": "^1.21.0"
     },
     "categories": [
+        "Snippets",
         "Other"
     ],
     "keywords": [
@@ -20,6 +21,12 @@
     ],
     "main": "./extension",
     "contributes": {
+        "snippets": [
+            {
+                "language": "lua",
+                "path": "./snippets/snippets.json"
+            }
+        ],
         "commands": [
             {
                 "command": "extension.sayHello",

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>
+function Script:Start()
+	$0 
+end
+	</string>
+	<key>name</key>
+	<string>start</string>
+	<key>tabTrigger</key>
+	<string>start</string>
+	<key>uuid</key>
+	<string>DD7FA46B-B2D4-4D7B-BEE3-848280EAD8A1</string>
+</dict>
+</plist>
