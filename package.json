@@ -2,14 +2,20 @@
     "name": "Leadwerks",
     "displayName": "Leadwerks",
     "description": "Leadwerks API and Lua extension",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "publisher": "aggror",
+    "homepage": "https://github.com/Aggror/VisualStudioCodeLeadwerksExtension",
     "engines": {
         "vscode": "^1.21.0"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Aggror/VisualStudioCodeLeadwerksExtension.git"
+    },
     "categories": [
         "Snippets",
-        "Game engine",
+        "Languages",
+        "Linters"
     ],
     "keywords": [
         "leadwerks",
