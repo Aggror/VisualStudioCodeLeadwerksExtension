@@ -72,7 +72,7 @@
 		"prefix": "propbool",
 		"description": "Displays a checkbox.",
         "body": [
-            "Script.$1 = \"$2\" --bool \"$3\"",
+            "Script.$1 = ${2|true,false|} --bool \"$3\"",
 			"$0"	
         ]
 	},
@@ -151,21 +151,19 @@
 
 	"print": {
 		"prefix": "print",
-		"body": "System:Print($0)",
+		"body": "System:Print(\"$0\")",
 		"description": "Print something to the console."
 	},
-
-	"table.insert": {
+	"tableinsert ": {
 		"prefix": "table.insert",
-		"body": "table.insert($table,$value)",
+		"body": "table.insert($table, $value)",
 		"description": "Inserts a value into a table at the end of the table."
 	},
-	"table.insert ": {
+	"tableinsert ": {
 		"prefix": "table.insert",
 		"body": "table.insert($table, $position, $value)",
 		"description": "Inserts a value into a table at the given position."
 	},
-
 	"if": {
 		"prefix": "if",
 		"body": [
@@ -175,7 +173,6 @@
 		],
 		"description": "Inserts an if statement."
 	},
-
 	"for": {
 		"prefix": "for",
 		"body": [
@@ -203,7 +200,7 @@
 		],
 		"description": "Iterate over a table sorted alphabetically. For instance: Apple, Orange, Pear"
 	},
-	"ipairs": {
+	"ipairs iteration": {
 		"prefix": "ipairs",
 		"body": [
 			"for $key, $value in ipairs($myTable) do"
@@ -212,14 +209,14 @@
 		],
 		"description": "Iterate over a table sequentially. For instance index 1, 2, 3"
 	},
-	"function": {
+	"Function Declaration": {
 		"prefix": "function",
 		"body": [
 			"function $FuntionName() do"
 			"	$0",
 			"end"
 		],
-		"description": "Creates a global function."
+		"description": "Declares a function."
 	},
 	"function ": {
 		"prefix": "function",
@@ -238,5 +235,81 @@
 			"end"
 		],
 		"description": "Creates a function that belongs to a custom object."
+	},
+
+	"lescript": {
+		"prefix": "lescripts",
+		"body": [
+			"--[[",
+			"--This function is called when the scene is started.",
+			"function Script:Start()",
+			""	,
+			"end",
+			"]]",
+			"",
+			"--[[",
+			"--This function is called every update of the game loop.",			
+			"function Script:UpdateWorld()",
+			"",
+			"end",
+			"]]",
+			"",
+			"--[[",
+			"--This function updates physics and is allways called 60 times per second.",		
+			"function Script:UpdatePhysics()",
+			"",
+			"end",
+			"]]",
+			"",
+			"--[[",
+			"--This can be used to select which objects an entity collides with. This overrides collision types completely.",
+			"function Script:Overlap(e)",
+			"	return Collision:Collide",
+			"end",
+			"]]",
+			"",
+			"--[[",
+			"function Script:Collision(entity, position, normal, speed)",
+			"",
+			"end",
+			"]]",
+			"",
+			"--[[",
+			"function Script:Draw()",
+			"",
+			"end",
+			"]]",
+			"",
+			"--[[",
+			"function Script:DrawEach(camera)",
+			"",
+			"end",
+			"]]",
+			"",
+			"--[[",
+			"--This function will be called after the world is rendered, before the screen is refreshed.",
+			"--Use this to perform any 2D drawing you want the entity to display.",
+			"function Script:PostRender(context)",
+			"",
+			"end",
+			"]]",
+			"",
+			"--[[",
+			"--This function will be called when the entity is deleted.",
+			"function Script:Detach()",
+			"",
+			"end",
+			"]]",
+			"",
+			"--[[",
+			"--This function will be called when the last instance of this script is deleted.",
+			"function Script:Cleanup()",
+			"",
+			"end",
+			"]]",
+			""
+		],
+		"description": "Creates a function that belongs to a custom object."
 	}	
+
 }
