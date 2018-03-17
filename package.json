@@ -2,14 +2,14 @@
     "name": "Leadwerks",
     "displayName": "Leadwerks",
     "description": "Leadwerks API and Lua extension",
-    "version": "0.0.1",
-    "publisher": "Aggror",
+    "version": "0.2.1",
+    "publisher": "aggror",
     "engines": {
         "vscode": "^1.21.0"
     },
     "categories": [
         "Snippets",
-        "Other"
+        "Game engine",
     ],
     "keywords": [
         "leadwerks",

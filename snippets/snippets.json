@@ -147,5 +147,96 @@
             "Script.$1 = $2 --choiceedit \"$3\" \"$4,\" ",
 			"$0"	
         ]
-	}
+	},
+
+	"print": {
+		"prefix": "print",
+		"body": "System:Print($0)",
+		"description": "Print something to the console."
+	},
+
+	"table.insert": {
+		"prefix": "table.insert",
+		"body": "table.insert($table,$value)",
+		"description": "Inserts a value into a table at the end of the table."
+	},
+	"table.insert ": {
+		"prefix": "table.insert",
+		"body": "table.insert($table, $position, $value)",
+		"description": "Inserts a value into a table at the given position."
+	},
+
+	"if": {
+		"prefix": "if",
+		"body": [
+			"if $value then"
+			"	$0",
+			"end"
+		],
+		"description": "Inserts an if statement."
+	},
+
+	"for": {
+		"prefix": "for",
+		"body": [
+			"for $index = $indexStartValue, $valueToReach do"
+			"	$0",
+			"end"
+		],
+		"description": "Inserts a for loop."
+	},
+	"for ": {
+		"prefix": "for",
+		"body": [
+			"for $index = $indexStartValue, $valueToReach, $incrementValue do"
+			"	$0",
+			"end"
+		],
+		"description": "Inserts a for loop with incrementer."
+	},
+	"pairs": {
+		"prefix": "pairs",
+		"body": [
+			"for $key, $value in pairs($myTable) do"
+			"	$0",
+			"end"
+		],
+		"description": "Iterate over a table sorted alphabetically. For instance: Apple, Orange, Pear"
+	},
+	"ipairs": {
+		"prefix": "ipairs",
+		"body": [
+			"for $key, $value in ipairs($myTable) do"
+			"	$0",
+			"end"
+		],
+		"description": "Iterate over a table sequentially. For instance index 1, 2, 3"
+	},
+	"function": {
+		"prefix": "function",
+		"body": [
+			"function $FuntionName() do"
+			"	$0",
+			"end"
+		],
+		"description": "Creates a global function."
+	},
+	"function ": {
+		"prefix": "function",
+		"body": [
+			"function Script:$FuntionName() do"
+			"	$0",
+			"end"
+		],
+		"description": "Creates a function that belongs to the script instance for an entity."
+	},
+	"function  ": {
+		"prefix": "function",
+		"body": [
+			"function $Object:$FuntionName() do"
+			"	$0",
+			"end"
+		],
+		"description": "Creates a function that belongs to a custom object."
+	}	
 }
