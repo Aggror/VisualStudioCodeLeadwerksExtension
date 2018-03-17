@@ -9,7 +9,6 @@ This is an unofficial Leadwerks extension for Visual Studio code.
 ## Release Notes
 Users appreciate release notes as you update your extension.
 
-
 ### 0.2.1
 Added some snippets for basis lua features.
 
@@ -18,4 +17,7 @@ Improved read me. First push to VS code marketplace.
 
 ### 0.1.0
 First test with snippets and Luacode extensions dependency.
+
+## Source code on Github
+https://github.com/Aggror/VisualStudioCodeLeadwerksExtension
 
