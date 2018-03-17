@@ -2,7 +2,7 @@
     "name": "Leadwerks",
     "displayName": "Leadwerks",
     "description": "Leadwerks API and Lua extension",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "publisher": "aggror",
     "homepage": "https://github.com/Aggror/VisualStudioCodeLeadwerksExtension",
     "engines": {
