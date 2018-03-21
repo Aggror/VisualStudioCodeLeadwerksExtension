@@ -33,16 +33,43 @@ namespace LeApiSnippetGenerator {
             XmlDocument xml = new XmlDocument();
             xml.LoadXml(data);
 
-            XmlNode apiReference = GetApiReferenceNode(xml);
-
+            List<XmlNode> apiObjects = GetApiReferenceObjects(xml);
+           
+            CreateGlobalFunctions(apiObjects);
+            //ProcessClasses();
             Console.WriteLine();
         }
 
-        private static XmlNode GetApiReferenceNode(XmlDocument xml) {
+        private static void CreateGlobalFunctions(List<XmlNode> apiObjects) {
+            List<XmlNode> globalObjects = new List<XmlNode>();
+            foreach (var apiObject in apiObjects) {
+                var firstChild = apiObject.FirstChild;
+                if(firstChild!= null){
+                    if (apiObject.FirstChild.NextSibling.InnerText == "class") {
+                        Console.WriteLine("class: " + apiObject.FirstChild.InnerText);
+                    }
+                    else if (apiObject.FirstChild.NextSibling.InnerText == "function") {
+                        Console.WriteLine("function: " + apiObject.FirstChild.InnerText);
+                    }
+                }
+                else {
+                    Console.WriteLine("Some weird object or comment: " );
+                }
+            }
+            //List<XmlNode> globalObjects = apiObjects.Where(a => a.FirstChild.NextSibling.InnerText == "function").ToList();
+
+            //foreach (var globalFunctionNode in globalFunctionNodes) {
+            //    Console.WriteLine(globalFunctionNode.LastChild.InnerText);
+            //}
+        }
+
+        private static List<XmlNode> GetApiReferenceObjects(XmlDocument xml) {
             XmlNodeList xnList = xml.SelectNodes("/contents/topics/topic/title");
             foreach (XmlNode xn in xnList) {
-                if (xn.InnerText == "API Reference")
-                    return xn;
+                if (xn.InnerText == "API Reference") {
+                    XmlNode apiObjects = xn.ParentNode.LastChild.LastChild.LastChild;
+                    return apiObjects.ChildNodes.Cast<XmlNode>().ToList();
+                }
             }
             return null;
         }
