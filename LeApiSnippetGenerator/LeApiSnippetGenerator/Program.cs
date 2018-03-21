@@ -34,33 +34,7 @@ namespace LeApiSnippetGenerator {
             xml.LoadXml(data);
 
             List<XmlNode> apiObjects = GetApiReferenceObjects(xml);
-           
-            CreateGlobalFunctions(apiObjects);
-            //ProcessClasses();
-            Console.WriteLine();
-        }
-
-        private static void CreateGlobalFunctions(List<XmlNode> apiObjects) {
-            List<XmlNode> globalObjects = new List<XmlNode>();
-            foreach (var apiObject in apiObjects) {
-                var firstChild = apiObject.FirstChild;
-                if(firstChild!= null){
-                    if (apiObject.FirstChild.NextSibling.InnerText == "class") {
-                        Console.WriteLine("class: " + apiObject.FirstChild.InnerText);
-                    }
-                    else if (apiObject.FirstChild.NextSibling.InnerText == "function") {
-                        Console.WriteLine("function: " + apiObject.FirstChild.InnerText);
-                    }
-                }
-                else {
-                    Console.WriteLine("Some weird object or comment: " );
-                }
-            }
-            //List<XmlNode> globalObjects = apiObjects.Where(a => a.FirstChild.NextSibling.InnerText == "function").ToList();
-
-            //foreach (var globalFunctionNode in globalFunctionNodes) {
-            //    Console.WriteLine(globalFunctionNode.LastChild.InnerText);
-            //}
+            CreateSnippets(apiObjects);
         }
 
         private static List<XmlNode> GetApiReferenceObjects(XmlDocument xml) {
@@ -72,6 +46,57 @@ namespace LeApiSnippetGenerator {
                 }
             }
             return null;
+        }
+
+        private static void CreateSnippets(List<XmlNode> apiObjects) { 
+            foreach (var apiObject in apiObjects) {
+                var firstChild = apiObject.FirstChild;
+                if(firstChild!= null){
+                    if (apiObject.FirstChild.NextSibling.InnerText == "class") {
+                        Console.WriteLine("main classes: " + apiObject.FirstChild.InnerText);
+
+                        if(apiObject.FirstChild.InnerText == "Entity"){
+                            CreateSnippet(apiObject, 1);
+                        }
+                    }
+                    else if (apiObject.FirstChild.NextSibling.InnerText == "function") {
+                        Console.WriteLine("Core function: " + apiObject.FirstChild.InnerText);
+                    }
+                }
+                else {
+                    Console.WriteLine("Some weird object or comment: " );
+                }
+            }
+        }
+
+        private static void CreateSnippet(XmlNode apiObject, int level) {
+            foreach (XmlNode xn in apiObject.ChildNodes) {
+
+                //Are there subclasses? Find with <topics>
+                if (xn.Name == "topics" && xn.FirstChild != null) {
+                    string output = "ApiObject '" + apiObject.FirstChild.InnerXml + " contains subclass '" + xn.FirstChild.FirstChild.InnerXml + "'.";
+                    Console.WriteLine(string.Concat(new String('-', level), output));
+                    
+                    XmlNodeList subClasses = xn.ChildNodes;
+                    foreach (XmlNode subClass in subClasses) {
+                        CreateSnippet(subClass, level + 1);
+                    }
+                }
+            }
+            //var firstChild = apiObject.FirstChild;
+            //    if (firstChild != null) {
+            //        if (apiObject.FirstChild.NextSibling.InnerText == "class") {
+            //            Console.WriteLine("main classes: " + apiObject.FirstChild.InnerText);
+            //        }
+            //        else if (apiObject.FirstChild.NextSibling.InnerText == "function") {
+            //            Console.WriteLine("Core function: " + apiObject.FirstChild.InnerText);
+            //            CreateSnippet(apiObject);
+            //        }
+            //    }
+            //    else {
+            //        Console.WriteLine("Some weird object or comment: ");
+            //    }
+            //}
         }
     }
 }
