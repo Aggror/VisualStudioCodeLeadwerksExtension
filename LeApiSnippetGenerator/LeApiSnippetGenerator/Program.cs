@@ -9,7 +9,8 @@ using System.Xml;
 namespace LeApiSnippetGenerator {
     class Program {
 
-        const string tocUrl = "https://www.leadwerks.com/documentation/toc.xml";
+        const string tocUrl = "https://raw.githubusercontent.com/Aggror/ledocstest/master/toc.xml";
+        //const string tocUrl = "https://www.leadwerks.com/documentation/toc.xml";
 
         static void Main(string[] args) {
             GetData();
@@ -23,7 +24,7 @@ namespace LeApiSnippetGenerator {
             using (HttpContent content = res.Content) {
                 string data = await content.ReadAsStringAsync();
                 if (data != null) {
-                    Console.WriteLine(data);
+                    //Console.WriteLine(data);
                     ConvertToLeObjects(data);
                 }
             }
@@ -48,15 +49,15 @@ namespace LeApiSnippetGenerator {
             return null;
         }
 
-        private static void CreateSnippets(List<XmlNode> apiObjects) { 
+        private static void CreateSnippets(List<XmlNode> apiObjects) {
             foreach (var apiObject in apiObjects) {
                 var firstChild = apiObject.FirstChild;
-                if(firstChild!= null){
+                if (firstChild != null) {
                     if (apiObject.FirstChild.NextSibling.InnerText == "class") {
                         Console.WriteLine("main classes: " + apiObject.FirstChild.InnerText);
 
-                        if(apiObject.FirstChild.InnerText == "Entity"){
-                            CreateSnippet(apiObject, 1);
+                        if (apiObject.FirstChild.InnerText == "Entity") {
+                            TraverseObject(apiObject, 1);
                         }
                     }
                     else if (apiObject.FirstChild.NextSibling.InnerText == "function") {
@@ -64,39 +65,58 @@ namespace LeApiSnippetGenerator {
                     }
                 }
                 else {
-                    Console.WriteLine("Some weird object or comment: " );
+                    Console.WriteLine("Some weird object or comment: ");
                 }
             }
         }
 
-        private static void CreateSnippet(XmlNode apiObject, int level) {
-            foreach (XmlNode xn in apiObject.ChildNodes) {
+        private static void TraverseObject(XmlNode apiObject, int level) {
 
-                //Are there subclasses? Find with <topics>
-                if (xn.Name == "topics" && xn.FirstChild != null) {
-                    string output = "ApiObject '" + apiObject.FirstChild.InnerXml + " contains subclass '" + xn.FirstChild.FirstChild.InnerXml + "'.";
-                    Console.WriteLine(string.Concat(new String('-', level), output));
-                    
-                    XmlNodeList subClasses = xn.ChildNodes;
-                    foreach (XmlNode subClass in subClasses) {
-                        CreateSnippet(subClass, level + 1);
+            string currentClass = apiObject.FirstChild.InnerXml;
+
+            XmlNode topicsNode = GetTopicsXmlNode(apiObject);
+
+            if (topicsNode != null) {
+                foreach (XmlNode topicNode in topicsNode.ChildNodes) {
+                    bool isClass = false;
+                    XmlNode subClass = null;
+
+                    foreach (XmlNode topicSubNode in topicNode.ChildNodes) {
+                        if (topicSubNode.Name == "title")
+                            Console.WriteLine(string.Concat(new String('-', level), topicSubNode.InnerText));
+                        if (topicSubNode.Name == "type" && topicSubNode.InnerText == "class")
+                            isClass = true;
+
+                        //Are there subclasses? Find with <topics>
+                        if (isClass && topicSubNode.Name == "topics") {
+                            subClass = topicSubNode.FirstChild != null ? topicSubNode : null;
+                            break;
+                        }
+                    }
+
+                    if (isClass) {
+                        string output = "ApiObject '" + currentClass + "' contains subclass '" + topicNode.FirstChild.InnerText + "'.";
+                        if (subClass == null) {
+                            Console.WriteLine(string.Concat(new String('-', level), output, " There are no functions for this class."));
+                        }
+                        else {
+                            Console.WriteLine(string.Concat(new String('-', level), output));
+
+                            TraverseObject(subClass, level + 1);
+                        }
                     }
                 }
             }
-            //var firstChild = apiObject.FirstChild;
-            //    if (firstChild != null) {
-            //        if (apiObject.FirstChild.NextSibling.InnerText == "class") {
-            //            Console.WriteLine("main classes: " + apiObject.FirstChild.InnerText);
-            //        }
-            //        else if (apiObject.FirstChild.NextSibling.InnerText == "function") {
-            //            Console.WriteLine("Core function: " + apiObject.FirstChild.InnerText);
-            //            CreateSnippet(apiObject);
-            //        }
-            //    }
-            //    else {
-            //        Console.WriteLine("Some weird object or comment: ");
-            //    }
-            //}
+        }
+
+
+        private static XmlNode GetTopicsXmlNode(XmlNode apiObject) {
+            foreach (XmlNode xn in apiObject.ChildNodes) {
+                if (xn.Name == "topics" && xn.FirstChild != null) {
+                    return xn;
+                }
+            }
+            return null;
         }
     }
 }
