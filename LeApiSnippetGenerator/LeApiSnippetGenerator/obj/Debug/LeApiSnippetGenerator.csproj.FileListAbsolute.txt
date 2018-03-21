@@ -1,7 +1,0 @@
-C:\Users\jornt\Documents\jollun\le5\VisualStudioCodeLeadwerksExtension\LeApiSnippetGenerator\LeApiSnippetGenerator\bin\Debug\LeApiSnippetGenerator.exe.config
-C:\Users\jornt\Documents\jollun\le5\VisualStudioCodeLeadwerksExtension\LeApiSnippetGenerator\LeApiSnippetGenerator\bin\Debug\LeApiSnippetGenerator.exe
-C:\Users\jornt\Documents\jollun\le5\VisualStudioCodeLeadwerksExtension\LeApiSnippetGenerator\LeApiSnippetGenerator\bin\Debug\LeApiSnippetGenerator.pdb
-C:\Users\jornt\Documents\jollun\le5\VisualStudioCodeLeadwerksExtension\LeApiSnippetGenerator\LeApiSnippetGenerator\obj\Debug\LeApiSnippetGenerator.csprojResolveAssemblyReference.cache
-C:\Users\jornt\Documents\jollun\le5\VisualStudioCodeLeadwerksExtension\LeApiSnippetGenerator\LeApiSnippetGenerator\obj\Debug\LeApiSnippetGenerator.csproj.CoreCompileInputs.cache
-C:\Users\jornt\Documents\jollun\le5\VisualStudioCodeLeadwerksExtension\LeApiSnippetGenerator\LeApiSnippetGenerator\obj\Debug\LeApiSnippetGenerator.exe
-C:\Users\jornt\Documents\jollun\le5\VisualStudioCodeLeadwerksExtension\LeApiSnippetGenerator\LeApiSnippetGenerator\obj\Debug\LeApiSnippetGenerator.pdb
