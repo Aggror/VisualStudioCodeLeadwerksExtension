@@ -9,8 +9,8 @@ using System.Xml;
 namespace LeApiSnippetGenerator {
     class Program {
 
-        const string tocUrl = "https://raw.githubusercontent.com/Aggror/ledocstest/master/toc.xml";
-        //const string tocUrl = "https://www.leadwerks.com/documentation/toc.xml";
+        const string baseUrl = "https://www.leadwerks.com/documentation/";
+        static List<Snippet> snippets = new List<Snippet>();
 
         static void Main(string[] args) {
             GetData();
@@ -20,7 +20,7 @@ namespace LeApiSnippetGenerator {
 
         static async void GetData() {
             using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage res = await client.GetAsync(tocUrl))
+            using (HttpResponseMessage res = await client.GetAsync(baseUrl+"toc.xml"))
             using (HttpContent content = res.Content) {
                 string data = await content.ReadAsStringAsync();
                 if (data != null) {
@@ -71,14 +71,13 @@ namespace LeApiSnippetGenerator {
         }
 
         private static void TraverseObject(XmlNode apiObject, int level) {
-
             string currentClass = apiObject.FirstChild.InnerXml;
-
             XmlNode topicsNode = GetTopicsXmlNode(apiObject);
 
             if (topicsNode != null) {
                 foreach (XmlNode topicNode in topicsNode.ChildNodes) {
                     bool isClass = false;
+                    string fileName = "";
                     XmlNode subClass = null;
 
                     foreach (XmlNode topicSubNode in topicNode.ChildNodes) {
@@ -86,6 +85,8 @@ namespace LeApiSnippetGenerator {
                             Console.WriteLine(string.Concat(new String('-', level), topicSubNode.InnerText));
                         if (topicSubNode.Name == "type" && topicSubNode.InnerText == "class")
                             isClass = true;
+                        if (topicSubNode.Name == "filename")
+                            fileName = topicSubNode.InnerText;
 
                         //Are there subclasses? Find with <topics>
                         if (isClass && topicSubNode.Name == "topics") {
@@ -105,6 +106,51 @@ namespace LeApiSnippetGenerator {
                             TraverseObject(subClass, level + 1);
                         }
                     }
+                    else {
+                        GetObjectData(fileName);
+                    }
+                }
+            }
+        }
+
+        static async void GetObjectData(string fileName) {
+            using (HttpClient client = new HttpClient())
+            using (HttpResponseMessage res = await client.GetAsync(baseUrl + fileName +".xml"))
+            using (HttpContent content = res.Content) {
+                string data = await content.ReadAsStringAsync();
+
+                if (data != null) {
+                    var snippet = new Snippet();
+                    XmlDocument xml = new XmlDocument();
+                    xml.LoadXml(data);
+
+                    XmlNodeList topicNode = xml.SelectNodes("/topic");
+                    foreach (XmlNode node in topicNode) {
+                        switch (node.Name) {
+                            case "title":
+                                snippet.title = node.InnerText;
+                                break;
+                            case "description":
+                                snippet.title = node.InnerText;
+                                break;
+                            case "syntaxes":
+                                snippet.title = node.InnerText;
+                                break;
+                            case "returns":
+                                snippet.title = node.InnerText;
+                                break;
+                            case "remarks":
+                                snippet.title = node.InnerText;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+
+                    snippets.Add(snippet);
+                    //Console.WriteLine(data);
+                    //ConvertToLeObjects(data);
                 }
             }
         }
