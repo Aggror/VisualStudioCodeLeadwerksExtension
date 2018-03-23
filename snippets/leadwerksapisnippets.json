@@ -1,315 +1,496 @@
-{
-	"start": {
-		"prefix": "start",
-		"description": "This function will be called once when a map is loaded, before the game starts running. If you need to load or initialize anything, this is the place to do it.",
-        "body": [
-            "function Script:Start()",
-            "	$0",
-            "end"
-        ]
-	},
-	"updateworld": {
-		"prefix": "updateworld",
-		"description": "This function is called once per frame, we already have seen. Use this for anything that needs to be regularly updated.",
-        "body": [
-            "function Script:UpdateWorld()",
-            "	$0",
-            "end"
-        ]
-	},
-	"updatephysics": {
-		"prefix": "updatephysics",
-		"description": "This function is called at a constant rate of 60 times per second, and is independent from framerate. Although it is called by the engine in the World::Update function, this may be called several times per frame, or it may be skipped some frames, depending on how fast your game is running.",
-        "body": [
-            "function Script:UpdatePhysics()",
-            "	$0",
-            "end"
-        ]
-	},
-	"collision": {
-		"prefix": "collision",
-		"description": "This function will be called whenever an object bumps into something else. You can use this to make a missile explode on impact, or make a sound play when an object falls.",
-        "body": [
-            "function Script:Collision(entity0,entity1,position,normal,speed)",
-            "	$0",
-            "end"
-        ]
-	},
-	"PostRender": {
-		"prefix": "postrender",
-		"description": "This function will be called after rendering. Use this for any 2D drawing you want to add, like a GUI or a message on the screen.",
-        "body": [
-            "function Script:PostRender(context)",
-            "	$0",
-            "end"
-        ]
-	},
-	"propstring": {
-		"prefix": "propstring",
-		"description": "Displays an editable text field.",
-        "body": [
-            "Script.$1 = \"$2\" --string \"$3\"",
-			"$0"	
-        ]
-	},
-	"propint": {
-		"prefix": "propint",
-		"description": "Displays an integer number spinner.",
-        "body": [
-            "Script.$1 = $2 --int \"$3\"",
-			"$0"	
-        ]
-	},
-	"propfloat": {
-		"prefix": "propfloat",
-		"description": "Displays a decimal number spinner.",
-        "body": [
-            "Script.$1 = $2 --float \"$3\"",
-			"$0"	
-        ]
-	},
-	"propbool": {
-		"prefix": "propbool",
-		"description": "Displays a checkbox.",
-        "body": [
-            "Script.$1 = ${2|true,false|} --bool \"$3\"",
-			"$0"	
-        ]
-	},
-	"propvec2": {
-		"prefix": "propvec2",
-		"description": "Displays a two-dimensional number spinner",
-        "body": [
-            "Script.$1 = Vec2($2, $3) --vec2 \"$4\"",
-			"$0"	
-        ]
-	},
-	"propvec3": {
-		"prefix": "propvec3",
-		"description": "Displays a three-dimensional number spinner",
-        "body": [
-            "Script.$1 = Vec3($2, $3, $4) --vec3 \"$5\"",
-			"$0"	
-        ]
-	},
-	"propvec4": {
-		"prefix": "propvec4",
-		"description": "Displays a two-dimensional number spinner.",
-        "body": [
-            "Script.$1 = Vec4($2, $3, $4, $5) --vec4 \"$6\"",
-			"$0"	
-        ]
-	},
-	"propcolor": {
-		"prefix": "propcolor",
-		"description": "Displays a color editor.",
-        "body": [
-            "Script.$1 = Vec4($2, $3, $4, $5) --color \"$6\"",
-			"$0"	
-        ]
-	},
-	"proppos": {
-		"prefix": "proppos",
-		"description": "Displays a three-dimensional number spinner using current grid units.",
-        "body": [
-            "Script.$1 = Vec4($2, $3, $4) --pos \"$5\"",
-			"$0"	
-        ]
-	},
-	"propentity": {
-		"prefix": "propentity",
-		"description": "Displays a field that can accept another object in the scene.",
-        "body": [
-            "Script.$1 = $2 --entity \"$3\"",
-			"$0"	
-        ]
-	},
-	"proppath": {
-		"prefix": "proppath",
-		"description": "Displays a file path field. [Filters]",
-        "body": [
-            "Script.$1 = $2 --path \"$3\"",
-			"$0"	
-        ]
-	},
-	"propchoice": {
-		"prefix": "propchoice",
-		"description": "Displays a drop-down list. The value is converted to a number. Separate values using a comma ','.",
-        "body": [
-            "Script.$1 = $2 --choice \"$3\" \"$4,\"",
-			"$0"	
-        ]
-	},
-	"propchoiceedit": {
-		"prefix": "propchoiceedit",
-		"description": "Displays an editable drop-down list.  The value is converted to a string. Separate values using a comma ','",
-        "body": [
-            "Script.$1 = $2 --choiceedit \"$3\" \"$4,\" ",
-			"$0"	
-        ]
-	},
-
-	"print": {
-		"prefix": "print",
-		"body": "System:Print(\"$0\")",
-		"description": "Print something to the console."
-	},
-	"tableinsert ": {
-		"prefix": "table.insert",
-		"body": "table.insert($table, $value)",
-		"description": "Inserts a value into a table at the end of the table."
-	},
-	"tableinsert ": {
-		"prefix": "table.insert",
-		"body": "table.insert($table, $position, $value)",
-		"description": "Inserts a value into a table at the given position."
-	},
-	"if": {
-		"prefix": "if",
-		"body": [
-			"if $value then"
-			"	$0",
-			"end"
-		],
-		"description": "Inserts an if statement."
-	},
-	"for": {
-		"prefix": "for",
-		"body": [
-			"for $index = $indexStartValue, $valueToReach do"
-			"	$0",
-			"end"
-		],
-		"description": "Inserts a for loop."
-	},
-	"for ": {
-		"prefix": "for",
-		"body": [
-			"for $index = $indexStartValue, $valueToReach, $incrementValue do"
-			"	$0",
-			"end"
-		],
-		"description": "Inserts a for loop with incrementer."
-	},
-	"pairs": {
-		"prefix": "pairs",
-		"body": [
-			"for $key, $value in pairs($myTable) do"
-			"	$0",
-			"end"
-		],
-		"description": "Iterate over a table sorted alphabetically. For instance: Apple, Orange, Pear"
-	},
-	"ipairs iteration": {
-		"prefix": "ipairs",
-		"body": [
-			"for $key, $value in ipairs($myTable) do"
-			"	$0",
-			"end"
-		],
-		"description": "Iterate over a table sequentially. For instance index 1, 2, 3"
-	},
-	"Function Declaration": {
-		"prefix": "function",
-		"body": [
-			"function $FuntionName() do"
-			"	$0",
-			"end"
-		],
-		"description": "Declares a function."
-	},
-	"function ": {
-		"prefix": "function",
-		"body": [
-			"function Script:$FuntionName() do"
-			"	$0",
-			"end"
-		],
-		"description": "Creates a function that belongs to the script instance for an entity."
-	},
-	"function  ": {
-		"prefix": "function",
-		"body": [
-			"function $Object:$FuntionName() do"
-			"	$0",
-			"end"
-		],
-		"description": "Creates a function that belongs to a custom object."
-	},
-
-	"lescript": {
-		"prefix": "lescripts",
-		"body": [
-			"--[[",
-			"--This function is called when the scene is started.",
-			"function Script:Start()",
-			""	,
-			"end",
-			"]]",
-			"",
-			"--[[",
-			"--This function is called every update of the game loop.",			
-			"function Script:UpdateWorld()",
-			"",
-			"end",
-			"]]",
-			"",
-			"--[[",
-			"--This function updates physics and is allways called 60 times per second.",		
-			"function Script:UpdatePhysics()",
-			"",
-			"end",
-			"]]",
-			"",
-			"--[[",
-			"--This can be used to select which objects an entity collides with. This overrides collision types completely.",
-			"function Script:Overlap(e)",
-			"	return Collision:Collide",
-			"end",
-			"]]",
-			"",
-			"--[[",
-			"function Script:Collision(entity, position, normal, speed)",
-			"",
-			"end",
-			"]]",
-			"",
-			"--[[",
-			"function Script:Draw()",
-			"",
-			"end",
-			"]]",
-			"",
-			"--[[",
-			"function Script:DrawEach(camera)",
-			"",
-			"end",
-			"]]",
-			"",
-			"--[[",
-			"--This function will be called after the world is rendered, before the screen is refreshed.",
-			"--Use this to perform any 2D drawing you want the entity to display.",
-			"function Script:PostRender(context)",
-			"",
-			"end",
-			"]]",
-			"",
-			"--[[",
-			"--This function will be called when the entity is deleted.",
-			"function Script:Detach()",
-			"",
-			"end",
-			"]]",
-			"",
-			"--[[",
-			"--This function will be called when the last instance of this script is deleted.",
-			"function Script:Cleanup()",
-			"",
-			"end",
-			"]]",
-			""
-		],
-		"description": "Creates a function that belongs to a custom object."
-	}	
-
+{"AddForce": {
+"prefix": "AddForce",
+"description": "This function applies a force to an entity.",
+"body": ["AddForce(number x, number y, number z, bool global = true)"]
+},
+"AddForce": {
+"prefix": "AddForce",
+"description": "This function applies a force to an entity.",
+"body": ["AddForce(Vec3 force, bool global = true)"]
+},
+"AddPointForce": {
+"prefix": "AddPointForce",
+"description": "This function adds a force at a specific position on an entity, transforming the force into both a force and torque value.  This can be used to simulate realistic impacts like bullets hitting an object.",
+"body": ["AddPointForce(number fx, number fy, number fz, number px, number py, number pz, bool global=true)"]
+},
+"AddPointForce": {
+"prefix": "AddPointForce",
+"description": "This function adds a force at a specific position on an entity, transforming the force into both a force and torque value.  This can be used to simulate realistic impacts like bullets hitting an object.",
+"body": ["AddPointForce(Vec3 force, Vec3 position, bool global=true)"]
+},
+"AddTorque": {
+"prefix": "AddTorque",
+"description": "This function adds torque (angular force) to an entity.",
+"body": ["AddTorque(number x, number y, number z, bool global = true)"]
+},
+"AddTorque": {
+"prefix": "AddTorque",
+"description": "This function adds torque (angular force) to an entity.",
+"body": ["AddTorque(Vec3 torque, bool global = true)"]
+},
+"AlignToVector": {
+"prefix": "AlignToVector",
+"description": "This function can be used to orient an entity's axis to match a user-defined axis in world space.",
+"body": ["AlignToVector(number x, number y, number z, number axis=2, number rate = 1.0, number roll = 0.0)"]
+},
+"AlignToVector": {
+"prefix": "AlignToVector",
+"description": "This function can be used to orient an entity's axis to match a user-defined axis in world space.",
+"body": ["void AlignToVector(Vec3 v, number axis=2, number rate = 1.0, number roll = 0.0)"]
+},
+"Copy": {
+"prefix": "Copy",
+"description": "This function creates and returns a unique duplicate of the specified entity.",
+"body": ["Entity Copy(bool recursive=true)"]
+},
+"CountAnimations": {
+"prefix": "CountAnimations",
+"description": "This function gets the number of animation sequences an entity contains.",
+"body": ["CountAnimations()"]
+},
+"CountChildren": {
+"prefix": "CountChildren",
+"description": "This function gets the number of children an entity has in its immediate sub-hierarchy.",
+"body": ["number CountChildren()"]
+},
+"EmitSound": {
+"prefix": "EmitSound",
+"description": "This function plays a sound at an entity's position in 3D space.  Spatialized sounds must be in mono format.",
+"body": ["number EmitSound(Sound sound, number range=50, number volume=1, number pitch=1, bool loopmode=false)"]
+},
+"EmitSound": {
+"prefix": "EmitSound",
+"description": "This function plays a sound at an entity's position in 3D space.  Spatialized sounds must be in mono format.",
+"body": ["EmitSound(Source source)"]
+},
+"FindChild": {
+"prefix": "FindChild",
+"description": "This function performs a recursive search and returns the first child entity it finds with the specified name.",
+"body": ["Entity FindChild(string name)"]
+},
+"GetAABB": {
+"prefix": "GetAABB",
+"description": "This function returns an entity's axis-aligned bounding box (AABB).",
+"body": ["AABB GetAABB(number mode = GlobalAABB)"]
+},
+"GetAnimationLength": {
+"prefix": "GetAnimationLength",
+"description": "This function gets the number of frames in an entity's animation sequence.",
+"body": ["number GetAnimationLength(number index)"]
+},
+"GetAnimationLength": {
+"prefix": "GetAnimationLength",
+"description": "This function gets the number of frames in an entity's animation sequence.",
+"body": ["number GetAnimationLength(string name)"]
+},
+"GetChild": {
+"prefix": "GetChild",
+"description": "This function gets the entity child at the specified index.",
+"body": ["Entity GetChild(index)"]
+},
+"GetColor": {
+"prefix": "GetColor",
+"description": "This function gets an entity's color.",
+"body": ["GetColor(mode=Color.Diffuse)"]
+},
+"GetCulled": {
+"prefix": "GetCulled",
+"description": "This function indicates whether an entity has been culled from rendering or not.",
+"body": ["bool GetCulled(camera=nil)"]
+},
+"GetDistance": {
+"prefix": "GetDistance",
+"description": "This function returns the distance between two entities in global space.",
+"body": ["number GetDistance(Entity entity)"]
+},
+"GetDistance": {
+"prefix": "GetDistance",
+"description": "This function returns the distance between two entities in global space.",
+"body": ["number GetDistance(Vec3 position, bool useshape = false)"]
+},
+"GetGravityMode": {
+"prefix": "GetGravityMode",
+"description": "This function gets the entity gravity mode.",
+"body": ["bool GetGravityMode()"]
+},
+"GetIntensity": {
+"prefix": "GetIntensity",
+"description": "This function gets the intensity of an entity's color.  The intensity is a multiplier used to increase or decrease the brightness of an entity's color.",
+"body": ["GetIntensity(mode=Color.Diffuse)"]
+},
+"GetKeyValue": {
+"prefix": "GetKeyValue",
+"description": "This function gets an entity key value.   A key value is a string value associated with a key name.",
+"body": ["std::string GetKeyValue(string keyname, string defaultvalue="")"]
+},
+"GetMass": {
+"prefix": "GetMass",
+"description": "This function gets the entity's mass.",
+"body": ["number GetMass()"]
+},
+"GetMaterial": {
+"prefix": "GetMaterial",
+"description": "This function gets an entity's material.",
+"body": ["Material GetMaterial()"]
+},
+"GetMatrix": {
+"prefix": "GetMatrix",
+"description": "This function gets an entity's 4x4 matrix.",
+"body": ["Mat4 GetMatrix(bool global = true)"]
+},
+"GetNavigationMode": {
+"prefix": "GetNavigationMode",
+"description": "This function gets an entity's pathfinding navigation mode.",
+"body": ["bool GetNavigationMode()"]
+},
+"GetOcclusionCullingMode": {
+"prefix": "GetOcclusionCullingMode",
+"description": "                This function gets an entity's occlusion testing mode.        ",
+"body": ["bool GetOcclusionCullingMode()"]
+},
+"GetOmega": {
+"prefix": "GetOmega",
+"description": "This function gets entity's omega (angular velocity), in global or local space.",
+"body": ["Vec3 GetOmega(bool global = true)"]
+},
+"GetParent": {
+"prefix": "GetParent",
+"description": "This function gets an entity's parent entity.",
+"body": ["Entity GetParent()"]
+},
+"GetPhysicsMode": {
+"prefix": "GetPhysicsMode",
+"description": "This function gets the physics mode of an entity, which indicates how it reacts to physical forces and collisions.",
+"body": ["number GetPhysicsMode()"]
+},
+"GetPickMode": {
+"prefix": "GetPickMode",
+"description": "This function gets an entity's pick mode.",
+"body": ["number GetPickMode()"]
+},
+"GetPickRadius": {
+"prefix": "GetPickRadius",
+"description": "This functions gets the entity radius for pick operations.",
+"body": ["number GetPickRadius()"]
+},
+"GetVelocity": {
+"prefix": "GetVelocity",
+"description": "This function gets entity's velocity, in global or local space.",
+"body": ["Vec3 GetVelocity(bool global = true)"]
+},
+"GetPosition": {
+"prefix": "GetPosition",
+"description": "This function gets the entity position, in local or global space.",
+"body": ["Vec3 GetPosition(bool global = false)"]
+},
+"GetQuaternion": {
+"prefix": "GetQuaternion",
+"description": "This function gets the quaternion rotation of an entity.  A quaternion is a special rotation value that is more accurate than Euler angles in some situations.",
+"body": ["Quat GetQuaterion(bool global  = false)"]
+},
+"GetScale": {
+"prefix": "GetScale",
+"description": "This function gets the entity scale in local space.",
+"body": ["Vec3 GetScale()"]
+},
+"GetShape": {
+"prefix": "GetShape",
+"description": "This function gets an entity's shape.  This function does not increment the shape's reference count.",
+"body": ["Shape GetShape()"]
+},
+"GetSweptCollisionMode": {
+"prefix": "GetSweptCollisionMode",
+"description": "This function gets the swept collision mode of an entity.",
+"body": ["bool GetSweptCollisionMode()"]
+},
+"GetVelocity": {
+"prefix": "GetVelocity",
+"description": "This function gets entity's velocity, in global or local space.",
+"body": ["Vec3 GetVelocity(bool global = true)"]
+},
+"GetViewRange": {
+"prefix": "GetViewRange",
+"description": "This function gets an entity's view range.",
+"body": ["GetViewRange()"]
+},
+"GoToPoint": {
+"prefix": "GoToPoint",
+"description": "This function uses the navigation system to make an entity walk along a path to a specific point in the world.",
+"body": ["GoToPoint(number x, number y, number z, number maxspeed=1.4, number maxacceleration=1.0)"]
+},
+"GoToPoint": {
+"prefix": "GoToPoint",
+"description": "This function uses the navigation system to make an entity walk along a path to a specific point in the world.",
+"body": ["GoToPoint(Vec3 point, number maxspeed=1.4, number maxacceleration=1.0)"]
+},
+"Hidden": {
+"prefix": "Hidden",
+"description": "This function can be used to tell if an entity is hidden.",
+"body": ["bool Hidden()"]
+},
+"Hide": {
+"prefix": "Hide",
+"description": "This functions hides an entity.  A hidden entity will be invisible, will not collide with other entities, and its 4x4 matrix will not be updated when the parent moves.",
+"body": ["void Hide()"]
+},
+"Instance": {
+"prefix": "Instance",
+"description": "This function creates and returns a new instance of the specified entity.  Because the function will not duplicate model surfaces, it is generally fast enough for real-time use.",
+"body": ["Entity Instance(recursive=true)"]
+},
+"LoadAnimation": {
+"prefix": "LoadAnimation",
+"description": "Loads one or more animations from a model file, onto an existing entity.  The hierarchy in the loaded file must match the hierarchy of the entity.",
+"body": ["LoadAnimation(string path, number flags=0)"]
+},
+"LockMatrix": {
+"prefix": "LockMatrix",
+"description": "This function pauses entity matrix updating.  For faster performance, use this before calling multiple animation commands, then use Entity::UnlockMatrix() to resume entity matrix updating.",
+"body": ["LockMatrix()"]
+},
+"Move": {
+"prefix": "Move",
+"description": "Sets the position of an entity in 3-dimensional space, using local or global coordinates.",
+"body": ["void Move(Vec3 position, bool global=false)"]
+},
+"Move": {
+"prefix": "Move",
+"description": "Sets the position of an entity in 3-dimensional space, using local or global coordinates.",
+"body": ["void Move(number x, number y, number z, bool global=false)"]
+},
+"Pick": {
+"prefix": "Pick",
+"description": "This function performs a pick operation on a single entity.",
+"body": ["bool Pick(Vec3 p0, Vec3 p1, Pick pick, number radius = 0.0, bool closest=false, bool recursive=false, number collisiontype=0)"]
+},
+"PlayAnimation": {
+"prefix": "PlayAnimation",
+"description": "This command makes an entity automatically play an animation sequence.",
+"body": ["PlayAnimation(string sequence,number speed=1.0f, number blendtime=500, number mode=0)"]
+},
+"PlayAnimation": {
+"prefix": "PlayAnimation",
+"description": "This command makes an entity automatically play an animation sequence.",
+"body": ["PlayAnimation(number sequence,number speed = 1.0f,number blendtime = 500, number mode = 0)"]
+},
+"Point": {
+"prefix": "Point",
+"description": "This function points an entity at another entity.",
+"body": ["Point(Entity entity, number axis = 2, number rate = 1.0, number roll = 0.0)"]
+},
+"SetAnimationFrame": {
+"prefix": "SetAnimationFrame",
+"description": "Sets an entity to a specific animation frame.",
+"body": ["SetAnimationFrame(number time, number blend=1.0, number index=0,  bool recursive=true)"]
+},
+"SetAnimationFrame": {
+"prefix": "SetAnimationFrame",
+"description": "Sets an entity to a specific animation frame.",
+"body": ["SetAnimationFrame(number time,number blend, string name, bool recursive=true)"]
+},
+"SetCollisionType": {
+"prefix": "SetCollisionType",
+"description": "Sets an entity's collision type.  Collision types are used to control what kind of objects will register collisions when they come into contact.",
+"body": ["SetCollisionType(number collisiontype,  bool recursive)"]
+},
+"SetColor": {
+"prefix": "SetColor",
+"description": "This function sets an entity's color.",
+"body": ["SetColor(number r, number g, number b, number a=1.0, number mode=Color.Diffuse, bool recursive=false)"]
+},
+"SetColor": {
+"prefix": "SetColor",
+"description": "This function sets an entity's color.",
+"body": ["SetColor(number r, number g, number b )"]
+},
+"SetColor": {
+"prefix": "SetColor",
+"description": "This function sets an entity's color.",
+"body": ["SetColor(Vec4 color,number mode=Color.Diffuse, bool recursive=false)"]
+},
+"SetFriction": {
+"prefix": "SetFriction",
+"description": "Sets an entity's static and kinetic friction.",
+"body": ["SetFriction(number staticfriction, number kineticfriction)"]
+},
+"SetGravityMode": {
+"prefix": "SetGravityMode",
+"description": "This functions sets the entity gravity mode, which controls whether gravity affects the entity.",
+"body": ["SetGravityMode(bool mode)"]
+},
+"SetInput": {
+"prefix": "SetInput",
+"description": "This functions set the movement parameters of an entity that uses the CharacterPhysics physics mode.                When an entity uses character physics, the physics will control the object's rotation, and calls to Entity::SetRotation() and similar functions will have no effect.",
+"body": ["SetInput(number angle, number move, number strafe=0, number jump=0, bool crouch = false, float maxaccel = 1, float maxdecel = 0.5, bool detailed = false,  float maxrotationspeed=5.0)"]
+},
+"SetIntensity": {
+"prefix": "SetIntensity",
+"description": "This function sets the entity color intensity.",
+"body": ["SetIntensity(number intensity, number mode=Color::Diffuse, bool recursive=false)"]
+},
+"SetKeyValue": {
+"prefix": "SetKeyValue",
+"description": "                This function sets an entity key value.   A key value is a string value associated with a key name.        ",
+"body": ["SetKeyValue(string keyname, string keytvalue)"]
+},
+"SetMass": {
+"prefix": "SetMass",
+"description": "Sets an entity's mass.",
+"body": ["SetMass(number mass)"]
+},
+"SetMass": {
+"prefix": "SetMass",
+"description": "Sets an entity's mass.",
+"body": ["SetMass(number mass,number cx,number cy,number cz,number ixx, number iyy,number izz)"]
+},
+"SetMaterial": {
+"prefix": "SetMaterial",
+"description": "This function sets an entity's material.",
+"body": ["SetMaterial(Material material, bool recursive = false)"]
+},
+"SetMatrix": {
+"prefix": "SetMatrix",
+"description": "This function sets an entity's 4x4 matrix and updates the position, rotation, and scale.",
+"body": ["SetMatrix(Mat4 matrix, bool global = true)"]
+},
+"SetOmega": {
+"prefix": "SetOmega",
+"description": "This function sets an entity's angular velocity, without interrupting the physics simulation.",
+"body": ["SetOmega(Vec3 omega, bool global = true)"]
+},
+"SetOmega": {
+"prefix": "SetOmega",
+"description": "This function sets an entity's angular velocity, without interrupting the physics simulation.",
+"body": ["SetOmega(number x, number y, number z, bool global = true)"]
+},
+"SetParent": {
+"prefix": "SetParent",
+"description": "This function can be used to parent one entity to another.  A child entity will maintain the same local orientation when its parent moves.",
+"body": ["SetParent(Entity parent, bool global=true)"]
+},
+"SetPhysicsMode": {
+"prefix": "SetPhysicsMode",
+"description": "Sets the entity physics mode.",
+"body": ["SetPhysicsMode(number mode)"]
+},
+"SetNavigationMode": {
+"prefix": "SetNavigationMode",
+"description": "This function sets an entity's pathfinding navigation mode.",
+"body": ["SetNavigationMode(bool mode, bool recursive=false)"]
+},
+"SetOcclusionCullingMode": {
+"prefix": "SetOcclusionCullingMode",
+"description": "This function sets the entity occlusion testing mode.",
+"body": ["SetOcclusionCullingMode(bool occlusionmode)"]
+},
+"SetPickMode": {
+"prefix": "SetPickMode",
+"description": "This function sets an entity's pick mode.",
+"body": ["void SetPickMode(number mode, bool recursive=false)"]
+},
+"SetPickRadius": {
+"prefix": "SetPickRadius",
+"description": "This function sets an entity's pick radius, for use with the Pick::Sphere pick mode.",
+"body": ["SetPickRadius(number radius)"]
+},
+"SetPosition": {
+"prefix": "SetPosition",
+"description": "Sets the position of an entity in 3-dimensional space, using local or global coordinates.",
+"body": ["SetPosition(number x number y, number z, bool global = false)"]
+},
+"SetPosition": {
+"prefix": "SetPosition",
+"description": "Sets the position of an entity in 3-dimensional space, using local or global coordinates.",
+"body": ["SetPosition(Vec3 position, bool global = false)"]
+},
+"SetQuaternion": {
+"prefix": "SetQuaternion",
+"description": "This function sets the quaternion rotation of an entity.  A quaternion is a special rotation value that is more accurate than Euler angles in some situations.",
+"body": ["SetQuaterion(Quat rotation, bool global  = false)"]
+},
+"SetRotation": {
+"prefix": "SetRotation",
+"description": "Rotates an entity with the specified euler rotation, in local or global space.",
+"body": ["SetRotation(number pitch, number yaw, number roll,  bool global=false)"]
+},
+"SetRotation": {
+"prefix": "SetRotation",
+"description": "Rotates an entity with the specified euler rotation, in local or global space.",
+"body": ["void SetRotation(Vec3 rotation, bool global=false)"]
+},
+"SetRotation": {
+"prefix": "SetRotation",
+"description": "Rotates an entity with the specified euler rotation, in local or global space.",
+"body": ["void SetRotation(Quat rotation, bool global=false)"]
+},
+"SetScale": {
+"prefix": "SetScale",
+"description": "This function sets the scale of an entity, in local space.",
+"body": ["SetScale(number x, number y, number z)"]
+},
+"SetScale": {
+"prefix": "SetScale",
+"description": "This function sets the scale of an entity, in local space.",
+"body": ["SetScale(Vec3 scale)"]
+},
+"SetShadowMode": {
+"prefix": "SetShadowMode",
+"description": "This functions sets the entity shadow mode, which controls whether the entity casts shadows.",
+"body": ["SetShadowMode(number mode)"]
+},
+"SetShape": {
+"prefix": "SetShape",
+"description": "This function sets the physics shape of an entity.",
+"body": ["SetShape(Shape shape)"]
+},
+"SetShape": {
+"prefix": "SetShape",
+"description": "This function sets the physics shape of an entity.",
+"body": ["SetShape(Shape shape, Mat4 mat)"]
+},
+"SetSweptCollisionMode": {
+"prefix": "SetSweptCollisionMode",
+"description": "This function sets the swept collision mode of an entity.  Entities with swept collision enabled will have more accurate collisions that are more computationally expensive to process.  Use this for small and thin objects if you have problems with them going through other entities.",
+"body": ["SetSweptCollisionMode(bool mode)"]
+},
+"SetVelocity": {
+"prefix": "SetVelocity",
+"description": "This function sets an entity's velocity, without interrupting the physics simulation.",
+"body": ["SetVelocity(Vec3 velocity, bool global = true)"]
+},
+"SetVelocity": {
+"prefix": "SetVelocity",
+"description": "This function sets an entity's velocity, without interrupting the physics simulation.",
+"body": ["SetVelocity(number x, number y, number z, bool global = true)"]
+},
+"Show": {
+"prefix": "Show",
+"description": "This function shows a hidden entity.  A hidden entity will be invisible, will not collide with other entities, and its 4x4 matrix will not be updated when the parent moves.",
+"body": ["Show()"]
+},
+"Stop": {
+"prefix": "Stop",
+"description": "This function stops the entity from following or moving to a point.",
+"body": ["Stop()"]
+},
+"StopAnimation": {
+"prefix": "StopAnimation",
+"description": "This command stops all currently playing animations..",
+"body": ["StopAnimation()"]
+},
+"Translate": {
+"prefix": "Translate",
+"description": "Moves an entity along its parent axes in local or global space.",
+"body": ["Translate(number x, number y, number z, bool global=false)"]
+},
+"Turn": {
+"prefix": "Turn",
+"description": "Turns an entity by the specified euler rotation in local or global space.  This function is more accurate than simply adding units to the rotation axes and will avoid problems with Gimbal lock.",
+"body": ["Turn(number pitch, number yaw, number roll, bool global=false);"]
+},
+"UnlockMatrix": {
+"prefix": "UnlockMatrix",
+"description": "This function resumes entity matrix updating after a matrix is locked.  For faster performance, use Entity::LockMatrix() before calling multiple animation commands, then use Entity::UnlockMatrix() to resume entity matrix updating.",
+"body": ["UnlockMatrix()"]
+}
 }
