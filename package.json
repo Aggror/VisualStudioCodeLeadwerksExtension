@@ -34,7 +34,7 @@
             },
             {
                 "language": "lua",
-                "path": "./snippets/leadwerkapisnippets.json"
+                "path": "./snippets/leadwerksapisnippets.json"
             }
         ],
         "commands": [
