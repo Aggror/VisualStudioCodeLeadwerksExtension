@@ -30,6 +30,7 @@ namespace LeApiSnippetGenerator {
 
     [XmlRoot(ElementName = "topic")]
     public class Topic {
+        public string classType;
         [XmlElement(ElementName = "title")]
         public string Title { get; set; }
         [XmlElement(ElementName = "description")]
