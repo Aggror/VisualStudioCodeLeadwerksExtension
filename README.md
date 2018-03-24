@@ -4,7 +4,7 @@ This is an unofficial Leadwerks extension for Visual Studio code.
 ## Features
 - Lua extension dependency
 - Leadwerks snippets for properties, Script functions and common Lua syntax.
-
+- Leadwerks API snippets. The entire Leadwerks API has snippets generated for with and without object. For instance: SetPosition() and Entity:SetPosition()
 
 ## Common snippets
 - prop[type] : Creates Leadwerk editor properties
