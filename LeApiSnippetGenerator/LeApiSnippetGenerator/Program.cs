@@ -72,6 +72,8 @@ namespace LeApiSnippetGenerator {
                     if (apiObject.FirstChild.NextSibling.InnerText == "class") {
                         Console.WriteLine("main classes: " + apiObject.FirstChild.InnerText);
 
+
+
                         //if (apiObject.FirstChild.InnerText == "Entity") {
                             TraverseObject(apiObject, 1);
                         //}
@@ -220,21 +222,50 @@ namespace LeApiSnippetGenerator {
             snippet.Append(string.Concat("\"", function, "\": {\n"));
             snippet.Append(string.Concat("\"prefix\": \"", function, "\",\n"));
             snippet.Append(string.Concat("\"description\": \"", GetCleanXmlString(topic.Description), "\",\n"));
-            snippet.Append("\"body\": [\"" + GetCleanXmlString(luaSyntax) + "\"]\n");
+            snippet.Append("\"body\": [\"" + ConvertSyntaxToSnippetBody(luaSyntax) + "\"]\n");
             snippet.Append("},\n");
             return snippet.ToString();
         }
 
+        private static string ConvertSyntaxToSnippetBody(string luaSyntax) {
+            string cleanLuaSyntax = GetCleanXmlString(luaSyntax);
+            int startIndex = cleanLuaSyntax.IndexOf('(') + 1;
+            int endIndex = cleanLuaSyntax.IndexOf(')');
+
+            if (cleanLuaSyntax.StartsWith("CountAnimations"))
+                Console.WriteLine();
+
+            string[] parameters = cleanLuaSyntax.Substring(startIndex, endIndex - startIndex).Split(',');
+            string allParameters = "";
+
+            for (int i = 0; i < parameters.Length; i++) {
+                allParameters += GetCleanParameter(parameters[i]);
+            };
+
+            if (!string.IsNullOrEmpty(allParameters))
+                allParameters = allParameters.Remove(allParameters.Length - 2);
+
+            cleanLuaSyntax = cleanLuaSyntax.Remove(startIndex, endIndex - startIndex);
+            cleanLuaSyntax = cleanLuaSyntax.Insert(startIndex, allParameters);
+
+            return cleanLuaSyntax;
+        }
+
+        private static string GetCleanParameter(string parameter) {
+            if (string.IsNullOrEmpty(parameter))
+                return "";
+            else
+                return string.Concat("$", parameter.Trim().Replace(" ", "_"), ", ");
+        }
+
         private static string ConvertToUniqueFunction(string function) {
-            if (functions.Contains(function)) 
+            if (functions.Contains(function))
                 function = ConvertToUniqueFunction(function + " ");
-            
+
             return function;
         }
 
         private static string GetCleanXmlString(string xmlToClean) {
-            if (xmlToClean.Contains('"'))
-                Console.WriteLine();
             string clean = xmlToClean.Replace("\t", "").Replace("\n", "").Replace("\r", "").Replace("\"", "'").Replace("  ", " ").Trim();
             Console.WriteLine(clean);
             return clean;
