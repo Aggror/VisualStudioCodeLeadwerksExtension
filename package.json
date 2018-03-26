@@ -31,6 +31,10 @@
             {
                 "language": "lua",
                 "path": "./snippets/snippets.json"
+            },
+            {
+                "language": "lua",
+                "path": "./snippets/leadwerkapisnippets.json"
             }
         ],
         "commands": [

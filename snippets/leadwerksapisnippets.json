@@ -149,38 +149,6 @@
         ]
 	},
 
-	"class": {
-		"prefix": "class",
-		"body": [
-			"$myClass = {}",
-			"",
-			"--Creates a new instance of $myClass ",
-			"function $myClass:create(value)",
-			"   local obj = {}",
-			"",
-			"   obj.testVariable = 10",
-			"",
-			"   for k,v in pairs($myClass) do",
-			"      obj[k] = v",
-			"   end",
-			"",
-			"   return obj",
-			"end",
-			"",
-			"function $myClass:Set(value)",
-			"   self.testVariable = value",
-			"end",
-			"",
-			"function $myClass:Get()",
-			"   return self.testVariable",
-			"end",
-			"",
-			"function $myClass:DoSomething()",
-			"   System:Print(\"I am a function of this class.\")",
-			"end"
-		],
-		"description": "Inserts a basic class that contains functions and variables."
-	},
 	"print": {
 		"prefix": "print",
 		"body": "System:Print(\"$0\")",
