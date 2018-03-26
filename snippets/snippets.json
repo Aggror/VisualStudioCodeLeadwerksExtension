@@ -269,7 +269,7 @@
 		"description": "Creates a function that belongs to a custom object."
 	},
 
-	"lescript": {
+	"lescripts": {
 		"prefix": "lescripts",
 		"body": [
 			"--[[",
@@ -341,7 +341,7 @@
 			"]]",
 			""
 		],
-		"description": "Creates a function that belongs to a custom object."
+		"description": "Creates a basic class object with sample function."
 	}	
 
 }

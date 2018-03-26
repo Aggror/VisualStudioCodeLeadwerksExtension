@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to the "leadwerks" extension will be documented in this file.
 
+
+### 0.6.x
+First generation of Leadwerks API snippets based on the Toc.xml. 
+
 ### 0.4.2
 Added 'lescripts' snippet that adds all default leadwerks entity script functions.
 Matched the minor version with the package.json level
