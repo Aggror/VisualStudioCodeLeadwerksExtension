@@ -3,7 +3,7 @@
     "displayName": "Leadwerks",
     "description": "Leadwerks API and Lua extension",
     "version": "0.6.4",
-    "publisher": "aggror",
+    "publisher": "Jorn Theunissen - \"Aggror\"",
     "homepage": "https://github.com/Aggror/VisualStudioCodeLeadwerksExtension",
     "engines": {
         "vscode": "^1.21.0"
