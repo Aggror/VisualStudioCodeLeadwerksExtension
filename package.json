@@ -2,7 +2,7 @@
     "name": "Leadwerks",
     "displayName": "Leadwerks",
     "description": "Leadwerks API and Lua extension",
-    "version": "0.4.2",
+    "version": "0.6.9",
     "publisher": "aggror",
     "homepage": "https://github.com/Aggror/VisualStudioCodeLeadwerksExtension",
     "engines": {
@@ -22,21 +22,25 @@
         "game engine",
         "lua"
     ],
-    "activationEvents": [
-        "onCommand:extension.sayHello"
-    ],
-    "main": "./extension",
+    "activationEvents": [],
+    "main": "./out/src/extension",
     "contributes": {
         "snippets": [
             {
                 "language": "lua",
                 "path": "./snippets/snippets.json"
+            },
+            {
+                "language": "lua",
+                "path": "./snippets/leadwerksapisnippets.json"
             }
         ],
-        "commands": [
+        "keybindings": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+                "command": "extension.sidePreview",
+                "key": "ctrl+shift+h",
+                "mac": "ctrl+shift+h",
+                "when": "editorTextFocus"
             }
         ]
     },

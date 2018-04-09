@@ -1,7 +1,8 @@
 {
 	"start": {
 		"prefix": "start",
-		"description": "This function will be called once when a map is loaded, before the game starts running. If you need to load or initialize anything, this is the place to do it.",
+		"description": ["This function will be called once when a map is loaded, before the game starts running.",
+			"\r\n - If you need to load or initialize anything, this is the place to do it."],
         "body": [
             "function Script:Start()",
             "	$0",
@@ -149,6 +150,38 @@
         ]
 	},
 
+	"class": {
+		"prefix": "class",
+		"body": [
+			"$myClass = {}",
+			"",
+			"--Creates a new instance of $myClass ",
+			"function $myClass:create(value)",
+			"   local obj = {}",
+			"",
+			"   obj.testVariable = 10",
+			"",
+			"   for k,v in pairs($myClass) do",
+			"      obj[k] = v",
+			"   end",
+			"",
+			"   return obj",
+			"end",
+			"",
+			"function $myClass:Set(value)",
+			"   self.testVariable = value",
+			"end",
+			"",
+			"function $myClass:Get()",
+			"   return self.testVariable",
+			"end",
+			"",
+			"function $myClass:DoSomething()",
+			"   System:Print(\"I am a function of this class.\")",
+			"end"
+		],
+		"description": "Inserts a basic class that contains functions and variables."
+	},
 	"print": {
 		"prefix": "print",
 		"body": "System:Print(\"$0\")",
@@ -237,7 +270,7 @@
 		"description": "Creates a function that belongs to a custom object."
 	},
 
-	"lescript": {
+	"lescripts": {
 		"prefix": "lescripts",
 		"body": [
 			"--[[",
@@ -309,7 +342,7 @@
 			"]]",
 			""
 		],
-		"description": "Creates a function that belongs to a custom object."
+		"description": "Creates a basic class object with sample function."
 	}	
 
 }
