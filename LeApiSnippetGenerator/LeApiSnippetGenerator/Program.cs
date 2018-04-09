@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -16,6 +18,9 @@ namespace LeApiSnippetGenerator {
         const string baseUrl = "https://www.leadwerks.com/documentation/";
         static List<Topic> topics = new List<Topic>();
         static List<string> functions = new List<string>();
+        static List<string> parameters = new List<string>();
+        static string blob = "";
+        static bool test = false;
 
         static void Main(string[] args) {
             Task<string> tocData = GetData();
@@ -30,6 +35,13 @@ namespace LeApiSnippetGenerator {
 
             Console.WriteLine("Elapsed= {0}", sw.Elapsed);
             Console.WriteLine(topics.Count);
+            Console.WriteLine(blob);
+
+            foreach (var item in parameters) {
+                blob += "[XmlElement(DataType = \"" + item + "\")]";
+                blob += "public string " + (item.First().ToString().ToUpper() + item.Substring(1)) + " { get; set; }";
+            }
+
             Console.ReadLine();
         }
 
@@ -72,9 +84,12 @@ namespace LeApiSnippetGenerator {
                     if (apiObject.FirstChild.NextSibling.InnerText == "class") {
                         Console.WriteLine("main classes: " + apiObject.FirstChild.InnerText);
 
-                        //if (apiObject.FirstChild.InnerText == "Entity") {
-                            TraverseObject(apiObject, 1);
-                        //}
+                        if (test && apiObject.FirstChild.InnerText == "Entity") {
+                          TraverseObject(apiObject, 1);
+                        }
+                        else if(!test) {
+                          TraverseObject(apiObject, 1);
+                        }
                     }
                     else if (apiObject.FirstChild.NextSibling.InnerText == "function") {
                         Console.WriteLine("Core function: " + apiObject.FirstChild.InnerText);
@@ -145,6 +160,8 @@ namespace LeApiSnippetGenerator {
                     if (!string.IsNullOrEmpty(data)) {
                         XmlDocument xml = new XmlDocument();
                         xml.LoadXml(data);
+                        //HasParams(data);
+
                         Topic topic = new Topic();
                         Object obj = ObjectToXML(data.Replace("<?xml version=\"1.0\"?>", ""), topic.GetType());
                         if (obj != null) {
@@ -155,6 +172,46 @@ namespace LeApiSnippetGenerator {
                     }
                 }
             }
+        }
+
+        private static void HasParams(string data) {
+            int a;
+            int b;
+            try {
+                if (data.Contains("parameters")) {
+                    a = data.IndexOf("<parameters>");
+                    b = data.IndexOf("</parameters>");
+
+                    if (a >= 0 && b >= 0) {
+                        a += 12;
+                        var paramterContent = data.Substring(a, b - a);
+                        var indices = IndexOfAll(paramterContent, "</");
+                        int lastIndex = 0;
+                        for (int i = 0; i < indices.Count() - 1; i++) {
+                            int curindex = indices.ElementAt(i);
+                            int nextIndex = paramterContent.IndexOf(">", curindex) + 1;
+                            string param = paramterContent.Substring(lastIndex, nextIndex - lastIndex);
+
+                            int o = param.IndexOf("<");
+                            int p = param.IndexOf(">");
+
+                            var paramType = param.Substring(o, p - o);
+                            if (!parameters.Contains(paramType))
+                                parameters.Add(paramType);
+
+                            lastIndex = nextIndex;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) {
+
+                throw;
+            }
+        }
+
+        public static IEnumerable<int> IndexOfAll(string sourceString, string subString) {
+            return Regex.Matches(sourceString, subString).Cast<Match>().Select(m => m.Index);
         }
 
         public static Object ObjectToXML(string xml, Type objectType) {
@@ -197,8 +254,8 @@ namespace LeApiSnippetGenerator {
                 foreach (var topic in topics) {
                     try {
                         foreach (var luaSyntax in topic.Luasyntaxes.Syntax) {
-                            allApiSnippets.Append(CreateSnippet(topic, luaSyntax, true));
-                            allApiSnippets.Append(CreateSnippet(topic, luaSyntax, false));
+                            allApiSnippets.Append(CreateSnippet(topic, luaSyntax, topic.Parameters, true));
+                            allApiSnippets.Append(CreateSnippet(topic, luaSyntax, topic.Parameters, false));
                         }
                     }
                     catch (Exception) {
@@ -211,7 +268,7 @@ namespace LeApiSnippetGenerator {
             }
         }
 
-        private static string CreateSnippet(Topic topic, string luaSyntax, bool includeClass) {
+        private static string CreateSnippet(Topic topic, string luaSyntax, Parameters parameters, bool includeClass) {
             StringBuilder snippet = new StringBuilder();
             string function = (includeClass ? topic.classType + ":" : "") + topic.Title;
             function = ConvertToUniqueFunction(function);
@@ -219,22 +276,92 @@ namespace LeApiSnippetGenerator {
 
             snippet.Append(string.Concat("\"", function, "\": {\n"));
             snippet.Append(string.Concat("\"prefix\": \"", function, "\",\n"));
-            snippet.Append(string.Concat("\"description\": \"", GetCleanXmlString(topic.Description), "\",\n"));
-            snippet.Append("\"body\": [\"" + GetCleanXmlString(luaSyntax) + "\"]\n");
+            snippet.Append(string.Concat("\"description\": \"", CombineDescriptionAndParamters(topic.Description, parameters), ",\n"));
+            snippet.Append("\"body\": [\"" + ConvertSyntaxToSnippetBody(luaSyntax) + "\"]\n");
             snippet.Append("},\n");
             return snippet.ToString();
         }
 
+        private static object CombineDescriptionAndParamters(string description, Parameters parameters) {
+            string combinedDescription = GetCleanXmlString(description);
+
+            //deal with parameter descriptions
+            bool parametersAdded = false;
+            var properties = parameters.GetType().GetProperties();
+            foreach (var p in properties) {
+                string paramterName = p.Name;
+                var parameterExplanation = p.GetValue(parameters, null);
+
+                if (parameterExplanation != null) {
+                    parametersAdded = true;
+                    parameterExplanation = GetCleanXmlString((string)parameterExplanation);
+                    combinedDescription += " \\r\\n - " + paramterName + ": " + parameterExplanation ;
+                    if (paramterName == "Force")
+                        Console.WriteLine();
+                }
+            }
+            combinedDescription += "\"";
+            if (parametersAdded && !string.IsNullOrEmpty(combinedDescription)) {
+               //combinedDescription = combinedDescription.Remove(combinedDescription.Length - 2);
+            }
+
+            return combinedDescription;
+        }
+
+        private static string ConvertSyntaxToSnippetBody(string luaSyntax) {
+            string cleanLuaSyntax = GetCleanXmlString(luaSyntax);
+            int startIndex = cleanLuaSyntax.IndexOf('(') + 1;
+            int endIndex = cleanLuaSyntax.IndexOf(')');
+
+            if (cleanLuaSyntax.StartsWith("CountAnimations"))
+                Console.WriteLine();
+
+            string[] parameters = cleanLuaSyntax.Substring(startIndex, endIndex - startIndex).Split(',');
+            string allParameters = "";
+
+            for (int i = 0; i < parameters.Length; i++) {
+                allParameters += GetCleanParameter(parameters[i]);
+            };
+
+            if (!string.IsNullOrEmpty(allParameters))
+                allParameters = allParameters.Remove(allParameters.Length - 2);
+
+            cleanLuaSyntax = cleanLuaSyntax.Remove(startIndex, endIndex - startIndex);
+            cleanLuaSyntax = cleanLuaSyntax.Insert(startIndex, allParameters);
+
+            return cleanLuaSyntax;
+        }
+
+        private static string GetCleanParameter(string parameter) {
+            if (string.IsNullOrEmpty(parameter))
+                return "";
+            else {
+                //$number_x, $number_y, $number_z, $bool_global=false
+                //return string.Concat("$", parameter.Trim().Replace(" ", "_"), ", ");
+
+
+                //$x, $y, $z, $global
+                int spaceIndex = parameter.Trim().IndexOf(' ')+1;
+                if (spaceIndex >= 0) {
+                    parameter = parameter.Substring(spaceIndex).Trim();
+                }
+
+                int equalIndex = parameter.IndexOf('=');
+                if (equalIndex >= 0) {
+                    parameter = parameter.Substring(0, equalIndex);
+                }
+                return string.Concat("$", parameter.Trim().Replace(" ", "_"), ", ");
+            }
+        }
+
         private static string ConvertToUniqueFunction(string function) {
-            if (functions.Contains(function)) 
+            if (functions.Contains(function))
                 function = ConvertToUniqueFunction(function + " ");
-            
+
             return function;
         }
 
         private static string GetCleanXmlString(string xmlToClean) {
-            if (xmlToClean.Contains('"'))
-                Console.WriteLine();
             string clean = xmlToClean.Replace("\t", "").Replace("\n", "").Replace("\r", "").Replace("\"", "'").Replace("  ", " ").Trim();
             Console.WriteLine(clean);
             return clean;

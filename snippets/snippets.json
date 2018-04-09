@@ -1,7 +1,8 @@
 {
 	"start": {
 		"prefix": "start",
-		"description": "This function will be called once when a map is loaded, before the game starts running. If you need to load or initialize anything, this is the place to do it.",
+		"description": ["This function will be called once when a map is loaded, before the game starts running.",
+			"\r\n - If you need to load or initialize anything, this is the place to do it."],
         "body": [
             "function Script:Start()",
             "	$0",
