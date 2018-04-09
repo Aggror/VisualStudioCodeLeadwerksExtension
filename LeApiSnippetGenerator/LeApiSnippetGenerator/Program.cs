@@ -20,6 +20,7 @@ namespace LeApiSnippetGenerator {
         static List<string> functions = new List<string>();
         static List<string> parameters = new List<string>();
         static string blob = "";
+        static bool test = false;
 
         static void Main(string[] args) {
             Task<string> tocData = GetData();
@@ -83,8 +84,11 @@ namespace LeApiSnippetGenerator {
                     if (apiObject.FirstChild.NextSibling.InnerText == "class") {
                         Console.WriteLine("main classes: " + apiObject.FirstChild.InnerText);
 
-                        if (apiObject.FirstChild.InnerText == "Entity") {
-                            TraverseObject(apiObject, 1);
+                        if (test && apiObject.FirstChild.InnerText == "Entity") {
+                          TraverseObject(apiObject, 1);
+                        }
+                        else if(!test) {
+                          TraverseObject(apiObject, 1);
                         }
                     }
                     else if (apiObject.FirstChild.NextSibling.InnerText == "function") {
@@ -117,10 +121,10 @@ namespace LeApiSnippetGenerator {
                             fileName = topicSubNode.InnerText;
 
                         //Are there subclasses? Find with <topics>
-                        //if (isClass && topicSubNode.Name == "topics") {
-                        //    subClass = topicSubNode.FirstChild != null ? topicSubNode : null;
-                        //    break;
-                        //}
+                        if (isClass && topicSubNode.Name == "topics") {
+                            subClass = topicSubNode.FirstChild != null ? topicSubNode : null;
+                            break;
+                        }
                     }
 
                     if (isClass) {
@@ -272,14 +276,14 @@ namespace LeApiSnippetGenerator {
 
             snippet.Append(string.Concat("\"", function, "\": {\n"));
             snippet.Append(string.Concat("\"prefix\": \"", function, "\",\n"));
-            snippet.Append(string.Concat("\"description\": [\"", CombineDescriptionAndParamters(topic.Description, parameters), "],\n"));
+            snippet.Append(string.Concat("\"description\": \"", CombineDescriptionAndParamters(topic.Description, parameters), ",\n"));
             snippet.Append("\"body\": [\"" + ConvertSyntaxToSnippetBody(luaSyntax) + "\"]\n");
             snippet.Append("},\n");
             return snippet.ToString();
         }
 
         private static object CombineDescriptionAndParamters(string description, Parameters parameters) {
-            string combinedDescription = GetCleanXmlString(description) + "\"";
+            string combinedDescription = GetCleanXmlString(description);
 
             //deal with parameter descriptions
             bool parametersAdded = false;
@@ -291,10 +295,12 @@ namespace LeApiSnippetGenerator {
                 if (parameterExplanation != null) {
                     parametersAdded = true;
                     parameterExplanation = GetCleanXmlString((string)parameterExplanation);
-                    combinedDescription += ",\r\n\" \\r\\n - " + paramterName + ": " + parameterExplanation + "\"";
+                    combinedDescription += " \\r\\n - " + paramterName + ": " + parameterExplanation ;
+                    if (paramterName == "Force")
+                        Console.WriteLine();
                 }
             }
-
+            combinedDescription += "\"";
             if (parametersAdded && !string.IsNullOrEmpty(combinedDescription)) {
                //combinedDescription = combinedDescription.Remove(combinedDescription.Length - 2);
             }
@@ -329,8 +335,23 @@ namespace LeApiSnippetGenerator {
         private static string GetCleanParameter(string parameter) {
             if (string.IsNullOrEmpty(parameter))
                 return "";
-            else
+            else {
+                //$number_x, $number_y, $number_z, $bool_global=false
+                //return string.Concat("$", parameter.Trim().Replace(" ", "_"), ", ");
+
+
+                //$x, $y, $z, $global
+                int spaceIndex = parameter.Trim().IndexOf(' ')+1;
+                if (spaceIndex >= 0) {
+                    parameter = parameter.Substring(spaceIndex).Trim();
+                }
+
+                int equalIndex = parameter.IndexOf('=');
+                if (equalIndex >= 0) {
+                    parameter = parameter.Substring(0, equalIndex);
+                }
                 return string.Concat("$", parameter.Trim().Replace(" ", "_"), ", ");
+            }
         }
 
         private static string ConvertToUniqueFunction(string function) {

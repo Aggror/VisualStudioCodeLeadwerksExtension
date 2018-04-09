@@ -2,6 +2,10 @@
 All notable changes to the "leadwerks" extension will be documented in this file.
 
 
+### 0.6.7
+Paramters are added to the funtions. Press tab when inserting a snippet to jump between paramters. 
+Description contains explanation of the parameters
+
 ### 0.6.x
 First generation of Leadwerks API snippets based on the Toc.xml. 
 
